@@ -5,28 +5,36 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Break the Block Wall</title>
   <link rel="stylesheet" href="styles.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet" />
 </head>
 <body>
+  <!-- Animated Gradient Background -->
+  <div class="animated-gradient-bg"></div>
+
+  <!-- Floating Blurred Background Blobs -->
+  <div class="background-art">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+  </div>
 
   <!-- Theme Toggle -->
   <button id="themeToggle"><span id="themeLabel">☀️ Chase the Light</span></button>
 
   <div class="container">
-    <!-- Main Title -->
     <h1 class="gradient-heading">Break the Block!</h1>
     <p class="subtitle">
       Feeling bored or blocked? Share why. Let's help each other see it differently.
     </p>
 
-    <!-- Input Card -->
     <div class="glass input-card">
       <h2 class="gradient-heading">What's on your mind?</h2>
-      <textarea id="whyInput" placeholder="Why are you bored or blocked? (Press Enter to submit. Shift+Enter for new line)"></textarea>
+      <textarea id="whyInput" placeholder="Why are you bored or blocked? (Press Enter or click Submit)"></textarea>
+      <button id="submitBtn" class="submit-btn">Submit</button>
     </div>
 
     <div class="section-divider"></div>
 
-    <!-- Advertisement Section -->
     <div class="glass ad-section">
       <span class="ad-label">Advertisement</span>
       <span class="ad-placeholder">Your Ad Here</span>
@@ -34,7 +42,6 @@
 
     <div class="section-divider"></div>
 
-    <!-- Wall Section -->
     <h2 class="gradient-heading">See What Others Shared</h2>
     <div id="wall"></div>
   </div>
