@@ -1,8 +1,7 @@
-// ✅ Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-// ✅ Your Firebase config
+// ✅ Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAucWzQLOi4iupT23pDFPi6ltoE9Y5Hfxg",
   authDomain: "creative-block-c9c70.firebaseapp.com",
@@ -14,7 +13,6 @@ const firebaseConfig = {
   measurementId: "G-4ZGYX3DVXJ"
 };
 
-// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 const postsRef = ref(database, 'posts');
@@ -31,21 +29,15 @@ const whyInput = document.getElementById('whyInput');
 const wallDiv = document.getElementById('wall');
 const themeToggle = document.getElementById('themeToggle');
 
-// ✅ Enter / Shift+Enter handling
+// ✅ Enter/Shift+Enter logic
 whyInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter') {
-    if (e.shiftKey) {
-      // Allow new lines
-      return;
-    } else {
-      // Submit
-      e.preventDefault();
-      submitWhy();
-    }
+    if (e.shiftKey) return;
+    e.preventDefault();
+    submitWhy();
   }
 });
 
-// ✅ Submit Function
 function submitWhy() {
   const text = whyInput.value.trim();
   if (text) {
@@ -62,7 +54,6 @@ onValue(postsRef, (snapshot) => {
 // ✅ Render posts
 function renderPosts(snapshot) {
   wallDiv.innerHTML = '';
-
   if (!snapshot.exists()) {
     wallDiv.innerHTML = `<p class="subtitle">No one has shared yet. Be the first!</p>`;
     return;
@@ -92,7 +83,6 @@ function renderPosts(snapshot) {
   attachReplyListeners(data);
 }
 
-// ✅ Attach reply inputs
 function attachReplyListeners(data) {
   Object.entries(data).forEach(([key, post]) => {
     const input = document.getElementById(`replyInput-${key}`);
@@ -109,14 +99,13 @@ function attachReplyListeners(data) {
   });
 }
 
-// ✅ Random Username
 function generateRandomUsername() {
   const adjectives = ['Mint', 'Pixel', 'Silent', 'Neon', 'Cosmic', 'Lunar', 'Aqua', 'Nova', 'Velvet', 'Shadow'];
   const nouns = ['Lion', 'Star', 'Wave', 'Bloom', 'Falcon', 'Crystal', 'Phoenix', 'Drift', 'Echo', 'Sky'];
   return `${adjectives[Math.floor(Math.random() * adjectives.length)]}${nouns[Math.floor(Math.random() * nouns.length)]}#${Math.floor(1000 + Math.random() * 9000)}`;
 }
 
-// ✅ Theme Toggle
+// ✅ Theme toggle
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   updateThemeButton();
