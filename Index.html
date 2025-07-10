@@ -3,30 +3,50 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Creative Confessions Wall</title>
+  <title>Why Wall</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-  <header>
-    <h1 class="gradient-heading">✨ Break the Block Wall ✨</h1>
-    <p class="subtitle">Feeling blocked? Share why. Let's unblock together!</p>
-  </header>
+  <!-- Animated Gradient Background -->
+  <div class="animated-gradient-bg"></div>
 
-  <div class="input-container glass">
-    <h2 class="gradient-heading">What's on your mind?</h2>
-    <textarea id="whyInput" placeholder="Why are you blocked? Press Enter to share. Shift+Enter for new line"></textarea>
+  <!-- Floating Blurred Background Blobs -->
+  <div class="background-art">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
   </div>
 
-  <section>
-    <h2 class="gradient-heading">🌟 See What Others Shared 🌟</h2>
-    <div id="wall" class="wall glass">
-      <p class="subtitle">Loading...</p>
-    </div>
-  </section>
+  <!-- Theme Toggle -->
+  <button id="themeToggle"><span id="themeLabel">☀️ Chase the Light</span></button>
 
-  <button id="themeToggle" class="theme-btn">
-    <span id="themeLabel">☀️ Chase the Light</span>
-  </button>
+  <div class="container">
+    <!-- Main Title -->
+    <h1 class="gradient-heading">Break the Block!</h1>
+    <p class="subtitle">
+      Feeling bored or blocked? Share why. Let's help each other see it differently.
+    </p>
+
+    <!-- Input Card -->
+    <div class="glass">
+      <h2 class="gradient-heading">What's on your mind?</h2>
+      <textarea id="whyInput" placeholder="Why are you bored or blocked? Press Enter to submit. Shift+Enter for new line"></textarea>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Advertisement Section -->
+    <div class="ad-section">
+      <span class="ad-label">Advertisement</span>
+      <span class="ad-placeholder">Your Ad Here</span>
+    </div>
+
+    <div class="section-divider"></div>
+
+    <!-- Wall Section -->
+    <h2 class="gradient-heading">See What Others Shared</h2>
+    <div id="wall"></div>
+  </div>
 
   <script type="module" src="app.js"></script>
 </body>
