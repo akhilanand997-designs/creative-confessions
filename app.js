@@ -17,8 +17,9 @@ const firebaseConfig = {
 // ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
+const postsRef = ref(database, 'posts');
 
-// ✅ Remember / create random username
+// ✅ Username
 let username = localStorage.getItem('whyWallUsername');
 if (!username) {
   username = generateRandomUsername();
@@ -30,20 +31,31 @@ const whyInput = document.getElementById('whyInput');
 const wallDiv = document.getElementById('wall');
 const themeToggle = document.getElementById('themeToggle');
 
-// ✅ Add new WHY on Enter
+// ✅ Enter / Shift+Enter handling
 whyInput.addEventListener('keydown', (e) => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    const text = whyInput.value.trim();
-    if (text) {
-      push(ref(database, 'posts'), { text, user: username, replies: [] });
-      whyInput.value = '';
+  if (e.key === 'Enter') {
+    if (e.shiftKey) {
+      // Allow new lines
+      return;
+    } else {
+      // Submit
+      e.preventDefault();
+      submitWhy();
     }
   }
 });
 
-// ✅ Listen for realtime updates
-onValue(ref(database, 'posts'), (snapshot) => {
+// ✅ Submit Function
+function submitWhy() {
+  const text = whyInput.value.trim();
+  if (text) {
+    push(postsRef, { text, user: username, replies: [] });
+    whyInput.value = '';
+  }
+}
+
+// ✅ Listen for posts
+onValue(postsRef, (snapshot) => {
   renderPosts(snapshot);
 });
 
@@ -97,7 +109,7 @@ function attachReplyListeners(data) {
   });
 }
 
-// ✅ Generate random username
+// ✅ Random Username
 function generateRandomUsername() {
   const adjectives = ['Mint', 'Pixel', 'Silent', 'Neon', 'Cosmic', 'Lunar', 'Aqua', 'Nova', 'Velvet', 'Shadow'];
   const nouns = ['Lion', 'Star', 'Wave', 'Bloom', 'Falcon', 'Crystal', 'Phoenix', 'Drift', 'Echo', 'Sky'];
@@ -110,7 +122,6 @@ themeToggle.addEventListener('click', () => {
   updateThemeButton();
 });
 
-// ✅ Theme Label Text
 function updateThemeButton() {
   const label = document.getElementById('themeLabel');
   if (document.body.classList.contains('light-theme')) {
