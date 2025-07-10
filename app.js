@@ -1,6 +1,6 @@
 // ✅ Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
-import { getDatabase, ref, push, onValue, set, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
+import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
 // ✅ Your Firebase config
 const firebaseConfig = {
@@ -18,22 +18,22 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// ✅ Generate (or remember) user identity
+// ✅ User identity
 let username = localStorage.getItem('whyWallUsername');
 if (!username) {
   username = generateRandomUsername();
   localStorage.setItem('whyWallUsername', username);
 }
 
-// ✅ Firebase posts reference
+// ✅ Firebase reference
 const postsRef = ref(database, 'posts');
 
-// ✅ DOM elements
+// ✅ DOM
 const whyInput = document.getElementById('whyInput');
 const wallDiv = document.getElementById('wall');
 const themeToggle = document.getElementById('themeToggle');
 
-// ✅ Add a new WHY post
+// ✅ Enter + Shift+Enter support
 whyInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -45,7 +45,11 @@ whyInput.addEventListener('keydown', (e) => {
   }
 });
 
-// ✅ Render posts from database
+// ✅ Load posts
+onValue(postsRef, (snapshot) => {
+  renderPosts(snapshot);
+});
+
 function renderPosts(snapshot) {
   wallDiv.innerHTML = '';
 
@@ -60,7 +64,6 @@ function renderPosts(snapshot) {
   posts.forEach(([key, post]) => {
     const card = document.createElement('div');
     card.className = 'glass';
-
     let html = `<p><strong>${post.user}:</strong> ${post.text}</p>`;
 
     if (post.replies && post.replies.length) {
@@ -70,7 +73,7 @@ function renderPosts(snapshot) {
         </div>`).join('');
     }
 
-    html += `<input id="replyInput-${key}" placeholder="Add your reply... (Press Enter to submit)">`;
+    html += `<input id="replyInput-${key}" placeholder="Add your reply... (Press Enter)">`;
     card.innerHTML = html;
     wallDiv.appendChild(card);
   });
@@ -78,7 +81,6 @@ function renderPosts(snapshot) {
   attachReplyListeners(data);
 }
 
-// ✅ Attach reply inputs
 function attachReplyListeners(data) {
   Object.entries(data).forEach(([key, post]) => {
     const input = document.getElementById(`replyInput-${key}`);
@@ -95,12 +97,7 @@ function attachReplyListeners(data) {
   });
 }
 
-// ✅ Listen for realtime updates
-onValue(postsRef, (snapshot) => {
-  renderPosts(snapshot);
-});
-
-// ✅ Random Username Generator
+// ✅ Random username
 function generateRandomUsername() {
   const adjectives = ['Mint', 'Pixel', 'Silent', 'Neon', 'Cosmic', 'Lunar', 'Aqua', 'Nova', 'Velvet', 'Shadow'];
   const nouns = ['Lion', 'Star', 'Wave', 'Bloom', 'Falcon', 'Crystal', 'Phoenix', 'Drift', 'Echo', 'Sky'];
@@ -110,13 +107,12 @@ function generateRandomUsername() {
   return `${adj}${noun}#${number}`;
 }
 
-// ✅ Theme toggle button
+// ✅ Theme toggle
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   updateThemeButton();
 });
 
-// ✅ Theme label
 function updateThemeButton() {
   const label = document.getElementById('themeLabel');
   if (document.body.classList.contains('light-theme')) {
