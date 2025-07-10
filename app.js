@@ -1,8 +1,6 @@
-// ✅ Import Firebase modules
 import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
 import { getDatabase, ref, push, onValue, update } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-database.js";
 
-// ✅ Your Firebase config
 const firebaseConfig = {
   apiKey: "AIzaSyAucWzQLOi4iupT23pDFPi6ltoE9Y5Hfxg",
   authDomain: "creative-block-c9c70.firebaseapp.com",
@@ -14,26 +12,21 @@ const firebaseConfig = {
   measurementId: "G-4ZGYX3DVXJ"
 };
 
-// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
 const database = getDatabase(app);
 
-// ✅ User identity
 let username = localStorage.getItem('whyWallUsername');
 if (!username) {
   username = generateRandomUsername();
   localStorage.setItem('whyWallUsername', username);
 }
 
-// ✅ Firebase reference
 const postsRef = ref(database, 'posts');
 
-// ✅ DOM
 const whyInput = document.getElementById('whyInput');
 const wallDiv = document.getElementById('wall');
 const themeToggle = document.getElementById('themeToggle');
 
-// ✅ Enter + Shift+Enter support
 whyInput.addEventListener('keydown', (e) => {
   if (e.key === 'Enter' && !e.shiftKey) {
     e.preventDefault();
@@ -45,14 +38,12 @@ whyInput.addEventListener('keydown', (e) => {
   }
 });
 
-// ✅ Load posts
 onValue(postsRef, (snapshot) => {
   renderPosts(snapshot);
 });
 
 function renderPosts(snapshot) {
   wallDiv.innerHTML = '';
-
   if (!snapshot.exists()) {
     wallDiv.innerHTML = `<p class="subtitle">No one has shared yet. Be the first!</p>`;
     return;
@@ -73,7 +64,7 @@ function renderPosts(snapshot) {
         </div>`).join('');
     }
 
-    html += `<input id="replyInput-${key}" placeholder="Add your reply... (Press Enter)">`;
+    html += `<input id="replyInput-${key}" placeholder="Add your reply... (Press Enter to submit)">`;
     card.innerHTML = html;
     wallDiv.appendChild(card);
   });
@@ -97,17 +88,12 @@ function attachReplyListeners(data) {
   });
 }
 
-// ✅ Random username
 function generateRandomUsername() {
   const adjectives = ['Mint', 'Pixel', 'Silent', 'Neon', 'Cosmic', 'Lunar', 'Aqua', 'Nova', 'Velvet', 'Shadow'];
   const nouns = ['Lion', 'Star', 'Wave', 'Bloom', 'Falcon', 'Crystal', 'Phoenix', 'Drift', 'Echo', 'Sky'];
-  const adj = adjectives[Math.floor(Math.random() * adjectives.length)];
-  const noun = nouns[Math.floor(Math.random() * nouns.length)];
-  const number = Math.floor(1000 + Math.random() * 9000);
-  return `${adj}${noun}#${number}`;
+  return `${adjectives[Math.floor(Math.random() * adjectives.length)]}${nouns[Math.floor(Math.random() * nouns.length)]}#${Math.floor(1000 + Math.random() * 9000)}`;
 }
 
-// ✅ Theme toggle
 themeToggle.addEventListener('click', () => {
   document.body.classList.toggle('light-theme');
   updateThemeButton();
@@ -116,18 +102,8 @@ themeToggle.addEventListener('click', () => {
 function updateThemeButton() {
   const label = document.getElementById('themeLabel');
   if (document.body.classList.contains('light-theme')) {
-    const options = [
-      "🌙 Embrace the Dark",
-      "🌙 Switch to Night Mode",
-      "🌙 Design in Shadows"
-    ];
-    label.textContent = options[Math.floor(Math.random() * options.length)];
+    label.textContent = "🌙 Embrace the Dark";
   } else {
-    const options = [
-      "☀️ Chase the Light",
-      "☀️ Design in Sunlight",
-      "☀️ Go Radiant"
-    ];
-    label.textContent = options[Math.floor(Math.random() * options.length)];
+    label.textContent = "☀️ Chase the Light";
   }
 }
